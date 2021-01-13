@@ -106,6 +106,8 @@ systemd启动模式的配置:
 ```Shell
 sudo vim /etc/systemd/system/transmission.service
 写入以下内容
+-g 是指定transmission-daemon的配置文件路径
+
 [Unit]
 Description=Transmission BitTorrent Daemon
 After=network.target
