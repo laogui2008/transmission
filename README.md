@@ -91,7 +91,7 @@ sudo strip /usr/local/bin/transmission-daemon
 说明:
 如果你是非systemd的老设备而且懒得自己写启动脚本，开机启动之类的，最简单的配置方法是:
 sudo apt install transmission-daemon
-sudo apt /etc/init.d/transmission-daemon stop
+sudo /etc/init.d/transmission-daemon stop
 sudo vi /etc/init.d/transmission-daemon
 把 DAEMON=/usr/bin/$NAME
 改成 DAEMON=/usr/local/bin/$NAME
@@ -125,20 +125,20 @@ WantedBy=multi-user.target
 
 ```Shell
 sudo chmod +x /etc/systemd/system/transmission.service
-systemctl daemon-reload
-systemctl enable transmission
+sudo systemctl daemon-reload
+sudo systemctl enable transmission
 ```
 
 ### 启动 Transmission 生成默认配置文件
 
 ```Shell
-systemctl start transmission.service
+sudo systemctl start transmission.service
 ```
 
 ### 关闭 Transmission 否则配置文件修改不会生效
 
 ```Shell
-systemctl stop transmission.service
+sudo systemctl stop transmission.service
 ```
 
 ### 修改配置文件
