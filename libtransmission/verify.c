@@ -30,6 +30,13 @@ enum
     MSEC_TO_SLEEP_PER_SECOND_DURING_VERIFY = 100
 };
 
+/* patch method  */
+static bool skiphashcheck = false;
+void skiphash() {
+    skiphashcheck = true;
+}
+/* end of patch method  */
+
 static bool verifyTorrent(tr_torrent* tor, bool* stopFlag)
 {
     time_t end;
@@ -66,7 +73,7 @@ static bool verifyTorrent(tr_torrent* tor, bool* stopFlag)
         }
 
         /* if we're starting a new file... */
-        if (filePos == 0 && fd == TR_BAD_SYS_FILE && fileIndex != prevFileIndex)
+        if (!skiphashcheck && filePos == 0 && fd == TR_BAD_SYS_FILE && fileIndex != prevFileIndex)
         {
             char* filename = tr_torrentFindFile(tor, fileIndex);
             fd = filename == NULL ? TR_BAD_SYS_FILE : tr_sys_file_open(filename, TR_SYS_FILE_READ | TR_SYS_FILE_SEQUENTIAL, 0,
@@ -86,7 +93,7 @@ static bool verifyTorrent(tr_torrent* tor, bool* stopFlag)
         {
             uint64_t numRead;
 
-            if (tr_sys_file_read_at(fd, buffer, bytesThisPass, filePos, &numRead, NULL) && numRead > 0)
+            if (!skiphashcheck && tr_sys_file_read_at(fd, buffer, bytesThisPass, filePos, &numRead, NULL) && numRead > 0)
             {
                 bytesThisPass = numRead;
                 tr_sha1_update(sha, buffer, bytesThisPass);
@@ -108,7 +115,7 @@ static bool verifyTorrent(tr_torrent* tor, bool* stopFlag)
             uint8_t hash[SHA_DIGEST_LENGTH];
 
             tr_sha1_final(sha, hash);
-            hasPiece = memcmp(hash, tor->info.pieces[pieceIndex].hash, SHA_DIGEST_LENGTH) == 0;
+            hasPiece = skiphashcheck || memcmp(hash, tor->info.pieces[pieceIndex].hash, SHA_DIGEST_LENGTH) == 0;
 
             if (hasPiece || hadPiece)
             {
@@ -146,6 +153,12 @@ static bool verifyTorrent(tr_torrent* tor, bool* stopFlag)
             filePos = 0;
         }
     }
+    /* log the event */
+    if(skiphashcheck) {
+        skiphashcheck = false;
+        tr_logAddTorInfo (tor, "%s", _("skip the hash check"));
+    }
+    /* end of patch */
 
     /* cleanup */
     if (fd != TR_BAD_SYS_FILE)
