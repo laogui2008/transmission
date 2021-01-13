@@ -13,17 +13,17 @@
 #### CentOS 7
 
 ```Shell
-yum install gcc gcc-c++ m4 make automake libtool gettext openssl-devel libcurl-devel libevent-devel intltool gtk3-devel wget vim zip unzip
+yum install gcc gcc-c++ m4 make automake libtool gettext openssl-devel libcurl-devel libevent-devel intltool wget vim zip unzip
 ```
 
 #### Ubuntu/Debian 18.04
 ```Shell
-apt-get install -y build-essential automake autoconf libtool pkg-config intltool libcurl4-openssl-dev libglib2.0-dev libevent-dev libminiupnpc-dev libgtk-3-dev libappindicator3-dev ca-certificates libssl-dev pkg-config cmake openssl libssl1.0-dev zip unzip vim
+apt-get install -y build-essential automake autoconf libtool pkg-config intltool libcurl4-openssl-dev libglib2.0-dev libevent-dev libminiupnpc-dev libappindicator3-dev ca-certificates libssl-dev pkg-config cmake openssl libssl1.0-dev zip unzip vim
 ```
 
 #### Ubuntu/Debian 20.04
 ```Shell
-apt-get install -y build-essential automake autoconf libtool pkg-config intltool libcurl4-openssl-dev libglib2.0-dev libevent-dev libminiupnpc-dev libgtk-3-dev libappindicator3-dev ca-certificates libssl-dev pkg-config cmake openssl libssl-dev zip unzip vim
+apt-get install -y build-essential automake autoconf libtool pkg-config intltool libcurl4-openssl-dev libglib2.0-dev libevent-dev libminiupnpc-dev libappindicator3-dev ca-certificates libssl-dev pkg-config cmake openssl libssl-dev zip unzip vim
 ```
 
 ### 下载源码
