@@ -34,6 +34,29 @@ git clone -b skip-hash-check https://github.com/wenyutools/transmission.git tran
 
 ### 解压编译
 
+autogen.sh的编译配置说明
+这里autogen.sh末尾处使用的configure选项是启用cli, 禁用gtk client：
+```Shell
+ ./configure --enable-cli --enable-daemon --with-inotify --enable-nls --without-gtk
+```
+如果你是编译给内存和cpu处理资源比较少的设备，那么可以修改成下面这条，以节省内存和cpu资源：
+```Shell
+ ./configure --enable-lightweight --enable-cli --enable-daemon --with-inotify --enable-nls --without-gtk
+```
+
+By default, `make install' will install all the files in
+`/usr/local/bin', `/usr/local/lib' '/usr/local/share' etc.  You can specify
+an installation prefix other than `/usr/local' using `--prefix',
+for instance `--prefix=$HOME'.
+
+默认的安装prefix是 /usr/local/
+所以自己编译出来的安装和启动位置是 
+/usr/local/bin/transmission-daemon
+/usr/local/share/transmission-web
+可以给configure加参数 --prefix来修改安装位置。
+configure的全部选项可以用./configure --help查看 
+
+开始编译
 ```Shell
 cd transmission-3.00_skip-hash-chek
 git submodule update --init
@@ -43,9 +66,38 @@ make
 sudo make install
 ```
 
+检查编译安装的版本：
+```Shell
+/usr/local/bin/transmission-daemon -V
+```
+你应该得到的是
+transmission-daemon 3.00 (commit-hash)
+
+另外需要指出的是自己刚编译好的文件，还带有开发调试符号，因此文件会比官方发行版本大很多，可以用strip命令来移除这些开发调试符号
+编译版:
+-rwxr-xr-x 1 root root 4.1M Jan 13 11:10 /usr/local/bin/transmission-daemon
+发行版:
+-rwxr-xr-x 1 root root 531K Mar 25  2020 /usr/bin/transmission-daemon
+这样就和发行版一样了:
+```Shell
+sudo strip /usr/local/bin/transmission-daemon
+```
+
 ## 如何配置
 
 在你编译安装完毕后，还需要一定的配置才能够使用。请注意:以下配置只适用于 PT([Private Tracker](https://www.baidu.com/s?wd=pt%E4%B8%8B%E8%BD%BD)) 不适用于 BT 。
+
+说明:
+如果你懒得自己写启动脚本，开机启动之类的，最简单的配置方法是:
+```Shell
+sudo apt install transmission-daemon
+sudo apt /etc/init.d/transmission-daemon stop
+sudo vi /etc/init.d/transmission-daemon
+```
+把 DAEMON=/usr/bin/$NAME
+改成 DAEMON=/usr/local/bin/$NAME
+这样相当于使用了官方的启动脚本，开机它这个脚本是启动自己编译的版本，而不是apt安装的版本。
+如果你这样做，就可以省去下面自己写脚本之类的。
 
 ### 创建启动脚本
 
