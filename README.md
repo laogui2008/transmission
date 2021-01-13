@@ -87,17 +87,19 @@ sudo strip /usr/local/bin/transmission-daemon
 
 在你编译安装完毕后，还需要一定的配置才能够使用。请注意:以下配置只适用于 PT([Private Tracker](https://www.baidu.com/s?wd=pt%E4%B8%8B%E8%BD%BD)) 不适用于 BT 。
 
-说明:
-如果你懒得自己写启动脚本，开机启动之类的，最简单的配置方法是:
 ```Shell
+说明:
+如果你是非systemd的老设备而且懒得自己写启动脚本，开机启动之类的，最简单的配置方法是:
 sudo apt install transmission-daemon
 sudo apt /etc/init.d/transmission-daemon stop
 sudo vi /etc/init.d/transmission-daemon
-```
 把 DAEMON=/usr/bin/$NAME
 改成 DAEMON=/usr/local/bin/$NAME
 这样相当于使用了官方的启动脚本，开机它这个脚本是启动自己编译的版本，而不是apt安装的版本。
 如果你这样做，就可以省去下面自己写脚本之类的。
+```
+
+systemd启动模式的配置:
 
 ### 创建启动脚本
 
