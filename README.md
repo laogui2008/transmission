@@ -29,13 +29,14 @@ apt-get install -y build-essential automake autoconf libtool pkg-config intltool
 ### 下载源码
 
 ```Shell
-git clone -branch skip-hash-check https://github.com/wenyutools/transmission.git transmission-3.00_skip-hash-chek
+git clone -b skip-hash-check https://github.com/wenyutools/transmission.git transmission-3.00_skip-hash-chek
 ```
 
 ### 解压编译
 
 ```Shell
 cd transmission-3.00_skip-hash-chek
+git submodule update --init
 chmod +x autogen.sh
 ./autogen.sh
 make

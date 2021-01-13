@@ -39,7 +39,7 @@ cd "$ORIGDIR" || exit $?
 
 if test -z "$AUTOGEN_SUBDIR_MODE"; then
   echo Running $srcdir/configure "$@"
-  $srcdir/configure "$@"
+  $srcdir/configure --enable-lightweight --enable-cli --enable-daemon --with-inotify --enable-nls --without-gtk "$@"
 
   echo
   echo "Now type 'make' to compile $PROJECT."
